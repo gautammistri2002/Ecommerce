@@ -1,0 +1,398 @@
+================================================================================
+ELECTROMART - FULL BACKEND, SPRING BOOT, POSTMAN & WEBSITE GUIDE
+================================================================================
+
+TABLE OF CONTENTS:
+1. WHAT MUST BE "ON" & RUNNING CONTINUOUSLY
+2. HOW TO TEST AND CHECK IN POSTMAN (STEP-BY-STEP)
+3. HOW THE WEBSITE TALKS TO THE BACKEND (COMPLETE PROCESS)
+4. COMPLETE API ENDPOINTS LIST & SAMPLE PAYLOADS
+5. QUICK DAILY CHECKLIST & TERMINAL COMMANDS
+6. THE CORE ARCHITECTURAL LOGIC (DEEP-DIVE):
+   - 6.1 Logic: Why Spring Boot & MySQL Must Stay Running Continuously
+   - 6.2 Logic: How Postman Communicates with the Spring Boot Engine
+   - 6.3 Logic: The Complete Registration & OTP Verification Algorithm
+   - 6.4 Logic: BCrypt Password Hashing & Authentication Verification
+   - 6.5 Logic: Frontend State Management, LocalStorage & UI Sync
+
+================================================================================
+1. WHAT MUST BE "ON" & RUNNING CONTINUOUSLY
+================================================================================
+
+To keep your e-commerce website and testing working smoothly, these THREE (3) 
+systems must be running at the same time:
+
+[1] MYSQL DATABASE SERVER (Port 3306)
+    - Stores tables: `users` and `password_reset_token`
+    - Runs in the background as a Windows Service named: MySQL80
+    - Status check command in PowerShell:
+        Get-Service MySQL80
+
+[2] JAVA SPRING BOOT BACKEND (Port 8080)
+    - Handles APIs, BCrypt password hashing, and OTP generation
+    - How to run:
+        cd "e:\gautm\project ecommerce\backend"
+        mvn spring-boot:run
+    - IMPORTANT: KEEP THIS TERMINAL WINDOW OPEN!
+      Do not close or press Ctrl+C while working. If closed, port 8080 stops 
+      and website will show "Backend Offline".
+
+[3] FRONTEND WEBSITE (Browser)
+    - Web interface located at: frontend/index.html and frontend/login.html
+    - Run using VS Code "Live Server" (Port 5500) or open directly in Chrome/Edge.
+
+================================================================================
+2. HOW TO CHECK IN POSTMAN (STEP-BY-STEP)
+================================================================================
+
+A ready-made collection is saved in your project:
+`e:\gautm\project ecommerce\electromart_postman_collection.json`
+
+--- STEP 1: IMPORT INTO POSTMAN ---
+1. Open the Postman application.
+2. Click the "Import" button (top-left).
+3. Select the file: electromart_postman_collection.json
+4. Click "Import". A folder named "ElectroMart API Collection" will appear 
+   in your left sidebar containing all 6 requests.
+
+--- STEP 2: TEST HEALTH CHECK (IS BACKEND RUNNING?) ---
+- Request: GET http://localhost:8080/api/auth/health
+- Headers: None needed
+- Body: None
+- Click: "Send"
+- Expected Response (Status 200 OK):
+  {
+    "success": true,
+    "message": "ElectroMart Backend is running!",
+    "data": null
+  }
+
+--- STEP 3: TEST SEND OTP (REGISTRATION) ---
+- Request: POST http://localhost:8080/api/auth/send-otp
+- Headers: Content-Type: application/json
+- Body (raw JSON):
+  {
+    "email": "testuser@example.com",
+    "purpose": "REGISTRATION"
+  }
+- Click: "Send"
+- Expected Response (Status 200 OK):
+  {
+    "success": true,
+    "message": "OTP sent successfully to testuser@example.com",
+    "data": {
+      "debugOtp": "834192"
+    }
+  }
+- ACTION: Copy this 6-digit OTP code (e.g. 834192).
+
+--- STEP 4: TEST USER REGISTRATION ---
+- Request: POST http://localhost:8080/api/auth/register
+- Headers: Content-Type: application/json
+- Body (raw JSON):
+  {
+    "name": "Gutam Kumar",
+    "email": "testuser@example.com",
+    "password": "password123",
+    "otp": "834192"
+  }
+  *(Replace 834192 with the OTP from Step 3)*
+- Click: "Send"
+- Expected Response (Status 200 OK):
+  {
+    "success": true,
+    "message": "Registration successful!",
+    "data": {
+      "id": 4,
+      "name": "Gutam Kumar",
+      "email": "testuser@example.com"
+    }
+  }
+
+--- STEP 5: TEST USER LOGIN ---
+- Request: POST http://localhost:8080/api/auth/login
+- Headers: Content-Type: application/json
+- Body (raw JSON):
+  {
+    "email": "testuser@example.com",
+    "password": "password123"
+  }
+- Click: "Send"
+- Expected Response (Status 200 OK):
+  {
+    "success": true,
+    "message": "Login successful!",
+    "data": {
+      "id": 4,
+      "name": "Gutam Kumar",
+      "email": "testuser@example.com"
+    }
+  }
+
+--- STEP 6: TEST PASSWORD RESET ---
+1. Send OTP for reset:
+   POST http://localhost:8080/api/auth/send-otp
+   Body:
+   {
+     "email": "testuser@example.com",
+     "purpose": "PASSWORD_RESET"
+   }
+   -> Note the new debugOtp.
+
+2. Submit new password:
+   POST http://localhost:8080/api/auth/reset-password
+   Body:
+   {
+     "email": "testuser@example.com",
+     "otp": "PASTE_NEW_OTP",
+     "newPassword": "newSecretPassword123"
+   }
+   -> Response: "Password reset successfully! Please sign in with your new password."
+
+================================================================================
+3. HOW THE WEBSITE TALKS TO THE BACKEND
+================================================================================
+
+FLOW DIAGRAM:
+-------------
+[User on Website]
+       │
+       ▼ (1. Fills Name & Email)
+[frontend/login.html] ──(POST /api/auth/send-otp)──► [Spring Boot :8080]
+                                                             │
+                                                             ▼ (Generates 6-digit OTP)
+[User enters OTP] ◄─────(Returns debugOtp)─────────── [Spring Boot]
+       │
+       ▼ (2. Enters OTP & Password)
+[frontend/login.html] ──(POST /api/auth/register)──► [Spring Boot]
+                                                             │
+                                                             ▼ (Hashes PW & Saves to DB)
+                                                     [MySQL :3306 Database]
+                                                             │
+[localStorage.setItem] ◄───(Returns User Info)────────┘
+       │
+       ▼ (3. Redirects to homepage)
+[frontend/index.html] displays: "Hi, Gutam 🟢"
+
+DETAILED FRONTEND PROCESS:
+1. Status Check on Load:
+   When `login.html` opens, it calls `GET /api/auth/health`.
+   - If Spring is running: Status pill turns GREEN ("Backend Connected Port 8080").
+   - If Spring is offline: Status pill turns RED ("Backend Offline").
+
+2. OTP Registration Flow:
+   - User types Name + Email and clicks "Send Verification OTP".
+   - Browser sends POST to `/api/auth/send-otp`.
+   - Spring Boot checks if the email already exists in MySQL. If not, it generates
+     a 6-digit OTP, stores it with 5-minute expiry, and returns it.
+   - The webpage switches to Step 2 and displays the OTP in the developer hint box.
+   - User enters OTP + password and clicks "Create Account".
+   - Browser sends POST to `/api/auth/register`.
+   - Spring Boot validates the OTP, hashes the password using BCrypt, and inserts
+     the user into MySQL table `users`.
+
+3. Login Flow:
+   - User enters Email + Password on `login.html` and clicks "Sign In".
+   - Browser sends POST to `/api/auth/login`.
+   - Spring Boot finds the user in MySQL, compares the password with BCrypt hash.
+   - If valid, returns `{ success: true, data: { name, email, id } }`.
+   - Frontend stores this in the browser:
+     `localStorage.setItem("electromart_user", JSON.stringify(userData));`
+   - User is redirected to `index.html`.
+   - `script.js` reads `localStorage` and changes the Account button to:
+     "Hi, Gutam 🟢"
+
+================================================================================
+4. COMPLETE API ENDPOINTS REFERENCE
+================================================================================
+
+BASE URL: http://localhost:8080/api/auth
+
++---+-----------------------+--------+--------------------------+-----------------------+
+| # | Action                | Method | URL Path                 | Request Body Type     |
++---+-----------------------+--------+--------------------------+-----------------------+
+| 1 | Health Check          | GET    | /api/auth/health         | None                  |
+| 2 | Send OTP              | POST   | /api/auth/send-otp       | JSON (email, purpose) |
+| 3 | Register              | POST   | /api/auth/register       | JSON (name, email...) |
+| 4 | Login                 | POST   | /api/auth/login          | JSON (email, pass)    |
+| 5 | Reset Password        | POST   | /api/auth/reset-password | JSON (email, otp, pw) |
++---+-----------------------+--------+--------------------------+-----------------------+
+
+================================================================================
+5. QUICK DAILY CHECKLIST & TERMINAL COMMANDS
+================================================================================
+
+Every time you turn on your computer or start coding:
+
+STEP 1: Verify MySQL is running
+    PowerShell command:
+    Get-Service MySQL80
+
+STEP 2: Start Spring Boot
+    Open PowerShell or Terminal in VS Code:
+    cd "e:\gautm\project ecommerce\backend"
+    mvn spring-boot:run
+    (Keep this terminal tab open!)
+
+STEP 3: Check Health in PowerShell or Postman
+    Invoke-RestMethod -Uri "http://localhost:8080/api/auth/health" -Method Get
+
+STEP 4: Open Frontend
+    Open frontend/index.html or frontend/login.html in browser or Live Server.
+
+================================================================================
+6. THE CORE ARCHITECTURAL LOGIC (DEEP-DIVE)
+================================================================================
+
+--------------------------------------------------------------------------------
+6.1 LOGIC: WHY SPRING BOOT & MYSQL MUST STAY RUNNING CONTINUOUSLY
+--------------------------------------------------------------------------------
+
+Why can't you run the command once and close the terminal?
+
+[A] The Network Socket & Port 8080:
+    When you execute `mvn spring-boot:run`, Spring Boot boots up an embedded
+    Tomcat Web Server. This server executes a low-level OS call:
+    `ServerSocket.bind(8080)`.
+    This tells Windows: "Any network packet arriving on port 8080 must be
+    delivered to this Java process."
+    The moment you close the terminal or hit Ctrl+C, the OS closes that socket.
+    Any request sent by Postman or the browser will immediately fail with
+    `ECONNREFUSED` (Connection Refused).
+
+[B] The Database Connection Pool (HikariCP):
+    Spring Boot maintains active, open TCP connections to MySQL on port 3306.
+    Keeping MySQL and Spring running ensures that database queries (SELECT,
+    INSERT) execute in milliseconds without reconnecting every single time.
+
+[C] In-Memory OTP Cache Lifecycle:
+    OTPs are stored in JVM memory:
+    `ConcurrentHashMap<String, OtpData> otpStore = new ConcurrentHashMap<>();`
+    If Spring Boot stops or restarts between the time you request an OTP and the
+    time you submit it, the memory is wiped clean, and the OTP becomes invalid!
+    Therefore, the Spring process must stay alive continuously.
+
+--------------------------------------------------------------------------------
+6.2 LOGIC: HOW POSTMAN COMMUNICATES WITH THE SPRING BOOT ENGINE
+--------------------------------------------------------------------------------
+
+When you click "Send" in Postman:
+
+1. Serialization:
+   Postman converts your JSON text into raw HTTP bytes:
+   POST /api/auth/login HTTP/1.1
+   Host: localhost:8080
+   Content-Type: application/json
+   {"email": "gutam@gmail.com", "password": "password123"}
+
+2. DispatcherServlet & Jackson Deserialization:
+   Spring's central gateway (`DispatcherServlet`) receives the request.
+   It looks at `@PostMapping("/login")` in `AuthController.java`.
+   Spring invokes Jackson JSON Mapper to automatically convert the raw JSON
+   string into a Java Object: `LoginRequest request`.
+
+3. Security & CORS Filter:
+   `SecurityConfig.java` checks:
+   `.requestMatchers("/api/**").permitAll()`
+   Because CORS and CSRF are configured to allow testing, the request passes
+   freely without needing session cookies.
+
+4. Service & Database Execution:
+   `AuthService.login()` runs the business rules, queries MySQL via JPA, and
+   wraps the result in an `ApiResponse` object.
+
+5. HTTP Response Status Code:
+   - If success == true: Spring returns HTTP 200 OK.
+   - If success == false: Spring returns HTTP 400 Bad Request.
+   Postman displays this status code, the response time (e.g. 15 ms), and the
+   formatted JSON payload.
+
+--------------------------------------------------------------------------------
+6.3 LOGIC: THE COMPLETE REGISTRATION & OTP VERIFICATION ALGORITHM
+--------------------------------------------------------------------------------
+
+Why does registration require two separate API calls?
+
+Phase 1: Proof of Email Ownership (send-otp)
+   1. User submits email address.
+   2. Spring Boot verifies if the email already exists in MySQL:
+      `userRepository.existsByEmailIgnoreCase(email)`
+      - If YES: Rejects immediately with "Email already registered".
+   3. Generates a secure pseudo-random 6-digit string:
+      `String.format("%06d", new Random().nextInt(999999))`
+   4. Calculates expiration timestamp:
+      `LocalDateTime.now().plusMinutes(5)`
+   5. Stores the pair in memory with key `"email:REGISTRATION"`.
+   6. Saves an audit record in `password_reset_token` table.
+
+Phase 2: Account Creation (register)
+   1. User submits name, email, password, and the 6-digit OTP.
+   2. Spring retrieves the stored OTP record for `"email:REGISTRATION"`.
+   3. Validates two conditions:
+      a) Is current time after `stored.expiresAt`? If yes -> REJECT (Expired).
+      b) Does `stored.otp.equals(submittedOtp)`? If no -> REJECT (Invalid OTP).
+   4. If valid, hashes password (see 6.4) and executes:
+      `userRepository.save(newUser)` -> translates to:
+      `INSERT INTO users (name, email, password_hash, created_at) VALUES (...)`
+   5. Cleans up memory:
+      `otpStore.remove(otpKey)` (prevents replay attacks).
+
+--------------------------------------------------------------------------------
+6.4 LOGIC: BCRYPT PASSWORD HASHING & AUTHENTICATION VERIFICATION
+--------------------------------------------------------------------------------
+
+Why does database setup show `$2a$10$...` instead of real passwords?
+
+[A] The Danger of Plaintext:
+    If a database is ever compromised, storing `password123` exposes user
+    accounts instantly.
+
+[B] The BCrypt Algorithm:
+    Spring Boot uses `BCryptPasswordEncoder`:
+    - Generates a cryptographic 128-bit random "Salt" for every password.
+    - Runs 10 rounds of Blowfish key expansion (work factor = 10).
+    - Resulting hash format: `$2a$10$EblZqNptyYvcLm/VwDCVAuBjzZOI7khzdyGPBr08PpIi0na624b8.`
+      Where:
+      `$2a$` = Algorithm identifier (BCrypt)
+      `$10$` = 2^10 hashing iterations
+      Remainder = Salt + Hash concatenated
+
+[C] Verification on Login:
+    BCrypt is a ONE-WAY cryptographic hash; it CANNOT be decrypted.
+    How does login verify your password?
+    When you login, `authService.login()` runs:
+    `passwordEncoder.matches(enteredPassword, user.getPasswordHash())`
+    It extracts the salt from the stored hash, hashes the entered password
+    using that exact salt, and checks if the two resulting hashes are identical!
+
+--------------------------------------------------------------------------------
+6.5 LOGIC: FRONTEND STATE MANAGEMENT, LOCALSTORAGE & UI SYNC
+--------------------------------------------------------------------------------
+
+How does the website know who you are without asking you to log in every time?
+
+[A] LocalStorage Persistence:
+    When `login.html` receives a successful response from `/api/auth/login`:
+    ```javascript
+    localStorage.setItem("electromart_user", JSON.stringify({
+        id: result.data.id,
+        name: result.data.name,
+        email: result.data.email
+    }));
+    ```
+    This stores the user profile inside the browser's persistent sandbox disk.
+
+[B] Cross-Tab Real-Time Synchronization:
+    In `frontend/script.js`:
+    ```javascript
+    window.addEventListener("storage", updateAuthUI);
+    window.addEventListener("focus", updateAuthUI);
+    document.addEventListener("DOMContentLoaded", updateAuthUI);
+    ```
+    - Whenever you switch tabs or log in on `login.html`, `updateAuthUI()` runs.
+    - It reads `localStorage.getItem("electromart_user")`.
+    - If found, it dynamically injects:
+      `Hi, Gutam <span style="background:#10b981;border-radius:50%"></span>`
+      into the navigation header.
+    - It also isolates your shopping cart so different users have their own carts!
+================================================================================

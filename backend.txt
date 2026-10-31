@@ -1,0 +1,7 @@
+JAVA SPRING BOOT FOR BACKEND
+
+Login - POST /api/auth/login
+Register - POST /api/auth/register (with OTP email verification)
+Send OTP - POST /api/auth/send-otp
+
+The DB has users (ID, NAME, EMAIL, PASSWORD_HASH, CREATED_AT) and password_reset_token (ID, USER_ID, TOKEN_HASH, EXPIRES_AT, USED_AT, CREATED_AT

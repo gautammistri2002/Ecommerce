@@ -1,0 +1,123 @@
+================================================================================
+ELECTROMART - SERVER VS POSTMAN COLLECTION: CORE DIFFERENCE & GUIDE
+================================================================================
+
+1. THE CORE DIFFERENCE AT A GLANCE
+--------------------------------------------------------------------------------
+ElectromartBackendApplication.java  -->  THE SERVER (The Producer / Kitchen)
+electromart_postman_collection.json -->  THE TESTER (The Client / Menu Card)
+
+Real-World Analogy:
+- `ElectromartBackendApplication.java` is like the Restaurant Kitchen & Chef.
+  It stores food in the pantry (MySQL), cooks the dishes (executes Java logic),
+  and serves meals to anyone who orders (listens on Port 8080).
+- `electromart_postman_collection.json` is like the Restaurant Menu Card.
+  It does not cook food; it is just a written list of dishes with prices and
+  names so a customer (Postman) knows what to order from the kitchen.
+
+--------------------------------------------------------------------------------
+2. SIDE-BY-SIDE COMPARISON TABLE
+--------------------------------------------------------------------------------
++--------------------------+---------------------------------+---------------------------------+
+| FEATURE                  | ElectromartBackendApplication   | electromart_postman_collection  |
++--------------------------+---------------------------------+---------------------------------+
+| File Type                | Java Source Code (.java)        | JSON Data Format (.json)        |
+| Purpose                  | Runs the backend server engine  | Shortcut presets for Postman    |
+| Language / Tech          | Java 17+, Spring Boot, Tomcat   | JSON Schema (Postman v2.1)      |
+| Network Port             | Binds & listens on Port 8080    | Does NOT open any port          |
+| Database Connection      | Connects to MySQL (Port 3306)   | Has NO database connection      |
+| Can it run alone?        | YES (It is a standalone server) | NO (Needs Postman app)          |
+| What happens if OFF?     | Port 8080 dies; site is OFFLINE | Nothing stops; site still works |
+| Execution Location       | Terminal / VS Code (Java JVM)   | Postman Desktop Application     |
++--------------------------+---------------------------------+---------------------------------+
+
+--------------------------------------------------------------------------------
+3. WHAT DOES `ElectromartBackendApplication.java` DO?
+--------------------------------------------------------------------------------
+Location: backend/src/main/java/com/electromart/ElectromartBackendApplication.java
+
+Code:
+```java
+package com.electromart;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ElectromartBackendApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(ElectromartBackendApplication.class, args);
+    }
+}
+```
+
+What happens when you click "Run" or execute `mvn spring-boot:run`:
+1. Spring Boot starts an embedded Apache Tomcat web server.
+2. It claims and listens on TCP Port 8080 (`ServerSocket.bind(8080)`).
+3. It initializes the HikariCP connection pool to MySQL on port 3306.
+4. It compiles and activates all REST API endpoints:
+   - GET  /api/auth/health
+   - POST /api/auth/send-otp
+   - POST /api/auth/register
+   - POST /api/auth/login
+   - POST /api/auth/reset-password
+5. It performs active logic: generates 6-digit OTPs, hashes passwords using
+   BCrypt, validates input, and queries/updates MySQL tables.
+
+WITHOUT THIS FILE RUNNING, THERE IS NO SERVER.
+
+--------------------------------------------------------------------------------
+4. WHAT DOES `electromart_postman_collection.json` DO?
+--------------------------------------------------------------------------------
+Location: electromart_postman_collection.json
+
+What is inside:
+A JSON structured blueprint containing 6 pre-configured requests:
+- Request names ("1. Health Check", "2. Send OTP", "3. Register", etc.)
+- HTTP Methods (GET, POST)
+- Target URLs (http://localhost:8080/api/auth/...)
+- Required HTTP Headers (Content-Type: application/json)
+- Sample raw JSON request bodies
+
+Why it exists:
+Without this file, every time you open Postman, you would have to manually:
+1. Select method "POST" from the dropdown.
+2. Type "http://localhost:8080/api/auth/register" (and avoid typos).
+3. Go to Headers and type "Content-Type: application/json".
+4. Go to Body tab, select "raw", choose "JSON", and write the JSON payload.
+
+By importing `electromart_postman_collection.json` into Postman, all 6 requests
+appear automatically in your sidebar, ready to click and hit "Send".
+
+THIS FILE DOES NOT RUN ANY SERVER. IT ONLY CONFIGURES POSTMAN.
+
+--------------------------------------------------------------------------------
+5. HOW THEY WORK TOGETHER (THE COMPLETE FLOW)
+--------------------------------------------------------------------------------
+
++----------------------------------------------------------------------------+
+| STEP 1: YOU START THE SERVER                                               |
+| ElectromartBackendApplication.java (Click Run in VS Code or Terminal)     |
+|                   │                                                        |
+|                   ▼                                                        |
+| [Tomcat opens Port 8080 and connects to MySQL on Port 3306]                |
++----------------------------------------------------------------------------+
+                                    ▲
+                                    │ HTTP Request (e.g. POST /api/auth/login)
+                                    │
+                                    │ HTTP Response (200 OK + JSON data)
+                                    ▼
++----------------------------------------------------------------------------+
+| STEP 2: YOU TEST WITH POSTMAN                                              |
+| electromart_postman_collection.json (Imported into Postman App)            |
+|                   │                                                        |
+|                   ▼                                                        |
+| [Postman sends the pre-configured request when you click "Send"]           |
++----------------------------------------------------------------------------+
+
+--------------------------------------------------------------------------------
+6. SUMMARY RULE TO REMEMBER
+--------------------------------------------------------------------------------
+- You RUN `ElectromartBackendApplication.java` to bring your backend to LIFE.
+- You IMPORT `electromart_postman_collection.json` to TEST that backend.
+================================================================================

@@ -1,0 +1,144 @@
+{
+  "info": {
+    "name": "ElectroMart API Collection",
+    "description": "Postman collection for testing ElectroMart backend authentication endpoints on http://localhost:8080",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/auth/health",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "auth", "health"]
+        },
+        "description": "Check if the ElectroMart backend server is running and reachable."
+      }
+    },
+    {
+      "name": "2. Send OTP (Registration)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"purpose\": \"REGISTRATION\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/auth/send-otp",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "auth", "send-otp"]
+        },
+        "description": "Generates a 6-digit OTP code for registration and returns debugOtp in the response."
+      }
+    },
+    {
+      "name": "3. Register New User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"testuser@example.com\",\n  \"password\": \"password123\",\n  \"otp\": \"PASTE_OTP_HERE\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/auth/register",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "auth", "register"]
+        },
+        "description": "Registers a new user after verifying the OTP received from Send OTP."
+      }
+    },
+    {
+      "name": "4. Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"gutam@gmail.com\",\n  \"password\": \"123456\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/auth/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "auth", "login"]
+        },
+        "description": "Authenticates user with email and password."
+      }
+    },
+    {
+      "name": "5. Send OTP (Password Reset)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"gutam@gmail.com\",\n  \"purpose\": \"PASSWORD_RESET\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/auth/send-otp",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "auth", "send-otp"]
+        },
+        "description": "Sends an OTP code specifically for resetting password of an existing registered user."
+      }
+    },
+    {
+      "name": "6. Reset Password",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"gutam@gmail.com\",\n  \"otp\": \"PASTE_OTP_HERE\",\n  \"newPassword\": \"newpassword123\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/auth/reset-password",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "auth", "reset-password"]
+        },
+        "description": "Updates the user's password using the verified OTP code."
+      }
+    }
+  ]
+}
