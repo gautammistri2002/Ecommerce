@@ -1,0 +1,34 @@
+MySQL vs NoSQL
+MySQL	NoSQL
+Relational database	Non-relational database
+Tables	Documents/collections or other structures
+Rows & columns	Often JSON-like documents
+Fixed schema is common	Flexible schema is common
+Uses SQL	Query language depends on database
+Example: MySQL	Example: MongoDB
+Popular NoSQL databases
+MongoDB — document database
+Redis — key-value database
+Cassandra — wide-column database
+DynamoDB — AWS NoSQL database
+For your ecommerce project
+
+For example, a MongoDB product document could contain:
+
+{
+  "name": "ASUS Vivobook",
+  "category": "Laptop",
+  "price": 91990,
+  "brand": "ASUS",
+  "ram": "16GB",
+  "storage": "512GB",
+  "rating": 4.6,
+  "features": ["OLED", "Wi-Fi 6", "Backlit Keyboard"]
+}
+
+So, NoSQL is useful when your application's data can have flexible or changing structures.
+
+Easy way to remember:
+
+SQL ? Tables
+NoSQL ? Flexible data/document structures

@@ -1,0 +1,1 @@
+Key idea: A foreign key does not mean one student can have only one subject. A student can appear many times in the enrollments table.

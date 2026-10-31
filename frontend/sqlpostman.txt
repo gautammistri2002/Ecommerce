@@ -1,0 +1,181 @@
+MySQL Workbench — stores user data.
+
+
+
+
+VS Code / Terminal — runs our backend code.
+
+
+
+
+Postman — sends signup data to the backend.
+
+1. Postman
+
+Name: Rahul
+
+Password: Rahul@123
+
+2. Node.js backend
+
+bcrypt.hash("Rahul@123", 10)
+
+3. MySQL
+
+Saves the generated hash in password_hash
+
+postman :-Postman is a software tool used by developers to test a website's backend API without creating the frontend 
+
+Follow these steps:
+1. Click Download Postman above.
+
+2. On the official website, choose the Windows desktop app.
+
+3. Wait for the installer to download.
+
+4. Open your browser's Downloads folder by pressing Ctrl + J.
+
+5. Open the downloaded Postman installer (.exe).
+
+6. Follow the installation instructions and open Postman.
+
+7. If asked to sign in or create an account, follow the options shown on screen.
+
+
+3. WHAT CAN YOU USE POSTMAN FOR?
+
+Task                                   |          Example
+
+Signup testing | Send a name, email and password to your backend
+
+Login testing | Check whether the backend accepts valid credentials
+
+Password hashing | Check whether your backend stores a hash instead of the original password
+
+Get data | Request student records from an API
+
+Test errors | Check what happens when required information is missing
+
+
+4. WHAT SHOULD YOU LEARN FIRST?
+
+For your Signup/Login project, follow this order:
+
+1. Install Postman.
+2. Create your MySQL database.
+3. Create your Node.js backend.
+4. Start your backend.
+5. Use Postman to send signup data.
+6. Check the saved data in MySQL Workbench.
+
+API:- What is an API?
+ API stands for Application Programming Interface.
+An API allows two software applications to communicate and exchange data with each other.
+
+For example, when you register on a website, the frontend sends your name and email to the backend through an API
+
+REAL  TTIME  EXAMPLE:-
+ 
+   Customer
+
+You order food.
+
+   Waiter = API
+
+Takes your order to the kitchen.
+
+  Kitchen = Backend
+
+Prepares the food and returns it.
+
+
+
+
+STUDENT REGISTRATION WEBSITE — API FLOW
+
+3.HOW API WORK:-
+
+
++--------------------------------------+
+|              FRONTEND                |
+|          HTML, CSS, React             |
+|                                      |
+|   Student enters name: Rahul          |
++--------------------------------------+
+                  |
+                  | API REQUEST
+                  | POST /api/students
+                  v
++--------------------------------------+
+|               BACKEND                |
+|          Node.js + Express            |
+|                                      |
+|   Receives and processes the data     |
++--------------------------------------+
+                  |
+                  | SQL QUERY
+                  v
++--------------------------------------+
+|              DATABASE                |
+|                MySQL                 |
+|                                      |
+|   Stores student information          |
++--------------------------------------+
+                  |
+                  | Result
+                  v
++--------------------------------------+
+|          BACKEND RESPONSE             |
+|                                      |
+|   "Student registered successfully"  |
++--------------------------------------+
+                  |
+                  v
+             FRONTEND
+       Displays success message
+
+3. What does an API look like?
+An API can have a URL called an endpoint.
+
+FOR EXAMPLE:-http://localhost:3000/api/students
+
+Here:
+- 
+localhost means your own
+computer.
+- 3000 is the port on which your backend is running.
+-
+/api/students is the endpoint for student-related operations.
+
+
+Method    |     Purpose            |     Example
+
+GET          |   Retrieve data     | Get all students
+
+POST       |  Create data          | Register a student
+
+PUT          |   Update data       | Update student details
+ 
+DELETE |    Delete data        | Delete a student
+
+
+API: The communication interface between your frontend and backend.
+
+
+
+
+Postman: A tool for testing your API.
+
+
+
+
+Node.js: Runs the backend code that handles API requests.
+
+
+
+
+MySQL: Stores the data in tables
+ 
+
+
+

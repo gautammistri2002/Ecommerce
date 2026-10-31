@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ElectroMart - Electronics Store</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <div class="logo">
+            Electro<span>Mart</span>
+        </div>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search products, brands and more...">
+
+            <button onclick="searchProduct()">
+                <i class="fa-solid fa-magnifying-glass"></i> Search
+            </button>
+
+            <div id="suggestions"></div>
+        </div>
+
+        <div class="header-buttons">
+
+            <button id="accountBtn" onclick="handleAccountClick()">
+                <i class="fa-solid fa-user"></i> <span id="accountBtnText">Account</span>
+            </button>
+
+            <button onclick="showWishlist()">
+                <i class="fa-regular fa-heart"></i> Wishlist
+            </button>
+
+            <button onclick="showCart()">
+                <i class="fa-solid fa-cart-shopping"></i> Cart
+                <span id="cartCount">0</span>
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav>
+
+        <a href="#" onclick="filterByCategory('all')">Home</a>
+        <a href="#" onclick="filterByCategory('mobile')">Mobiles</a>
+        <a href="#" onclick="filterByCategory('laptop')">Laptops</a>
+        <a href="#" onclick="filterByCategory('tv')">TV</a>
+        <a href="#" onclick="filterByCategory('audio')">Audio</a>
+        <a href="#" onclick="filterByCategory('wearable')">Smart Watches</a>
+        <a href="#offers">Offers</a>
+        <a href="#support">Customer Support</a>
+
+    </nav>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <div id="mainContent">
+
+        <!-- ================= HOME ================= -->
+
+        <section id="home" class="hero">
+
+            <div class="hero-content">
+
+                <p>BIG ELECTRONICS SALE</p>
+
+                <h1>
+                    Upgrade Your Technology
+                </h1>
+
+                <h2>
+                    Save More. Shop More.
+                </h2>
+
+                <p>
+                    Latest smartphones, laptops, televisions,
+                    headphones and accessories.
+                </p>
+
+                <button onclick="scrollToProducts()">
+                    Shop Now
+                </button>
+
+            </div>
+
+            <div class="offer-banner">
+
+                <h3>LIMITED OFFER</h3>
+
+                <h1>40% OFF</h1>
+
+                <p>+ Bank Offers</p>
+
+                <p>+ Easy EMI</p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= CATEGORIES ================= -->
+
+        <section class="categories">
+
+            <h2>Shop By Category</h2>
+
+            <div class="category-container">
+
+                <div class="category" onclick="filterByCategory('mobile')">
+                    <i class="fa-solid fa-mobile-screen"></i>
+                    <h3>Mobiles</h3>
+                </div>
+
+                <div class="category" onclick="filterByCategory('laptop')">
+                    <i class="fa-solid fa-laptop"></i>
+                    <h3>Laptops</h3>
+                </div>
+
+                <div class="category" onclick="filterByCategory('tv')">
+                    <i class="fa-solid fa-tv"></i>
+                    <h3>Televisions</h3>
+                </div>
+
+                <div class="category" onclick="filterByCategory('audio')">
+                    <i class="fa-solid fa-headphones"></i>
+                    <h3>Audio</h3>
+                </div>
+
+                <div class="category" onclick="filterByCategory('wearable')">
+                    <i class="fa-solid fa-stopwatch"></i>
+                    <h3>Smart Watches</h3>
+                </div>
+
+                <div class="category" onclick="filterByCategory('all')">
+                    <i class="fa-solid fa-plug"></i>
+                    <h3>Accessories</h3>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= OFFERS ================= -->
+
+        <section id="offers" class="offers">
+
+            <div class="offer-card">
+                <i class="fa-regular fa-credit-card"></i>
+                <h3>Full Swipe Offer</h3>
+                <p>5% Instant Discount up to ₹5,000 on full swipe with selected bank cards.</p>
+            </div>
+
+            <div class="offer-card">
+                <i class="fa-regular fa-calendar-alt"></i>
+                <h3>Easy EMI Offer</h3>
+                <p>5% Cashback up to ₹5,000 on EMI transactions.</p>
+            </div>
+
+            <div class="offer-card">
+                <i class="fa-solid fa-truck-fast"></i>
+                <h3>Fast Delivery</h3>
+                <p>Fast and secure delivery.</p>
+            </div>
+
+            <div class="offer-card">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h3>Extended Warranty</h3>
+                <p>Protect your products for longer.</p>
+            </div>
+
+        </section>
+
+
+        <!-- ================= AD SLIDER (BUYBACK + STUDENT) ================= -->
+
+        <section id="ad-slider" class="ad-slider-wrapper">
+
+            <!-- SLIDER TRACK -->
+            <div class="ad-slider-track">
+
+                <!-- SLIDE 1: BUYBACK -->
+                <div class="ad-slide buyback-banner active-slide">
+
+                    <div class="ad-banner-badge">🔥 HOT DEAL</div>
+
+                    <div class="ad-banner-left">
+                        <div class="ad-banner-icon">
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </div>
+                        <div class="ad-banner-text">
+                            <span class="ad-label">BUYBACK GUARANTEE</span>
+                            <h2>Upgrade. Trade In. Save Big!</h2>
+                            <p>
+                                Exchange your old smartphone, laptop, or tablet and get
+                                <strong>up to ₹25,000 instant value</strong> — applied right at checkout.
+                                No hassle. No waiting. Instant savings!
+                            </p>
+                            <ul class="ad-features">
+                                <li><i class="fa-solid fa-check-circle"></i> Free pickup from your doorstep</li>
+                                <li><i class="fa-solid fa-check-circle"></i> Instant credit — no bank wait</li>
+                                <li><i class="fa-solid fa-check-circle"></i> All brands accepted</li>
+                                <li><i class="fa-solid fa-check-circle"></i> Best price guaranteed</li>
+                            </ul>
+                            <div class="ad-buttons">
+                                <button class="ad-btn-primary" onclick="scrollToProducts()">
+                                    <i class="fa-solid fa-arrows-rotate"></i> Start Exchange Now
+                                </button>
+                                <button class="ad-btn-secondary">
+                                    <i class="fa-solid fa-calculator"></i> Calculate Value
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ad-banner-right buyback-visual">
+                        <div class="buyback-phones">
+                            <div class="phone-old">
+                                <i class="fa-solid fa-mobile-screen"></i>
+                                <span>Old Device</span>
+                            </div>
+                            <div class="exchange-arrow">
+                                <i class="fa-solid fa-right-left"></i>
+                            </div>
+                            <div class="phone-new">
+                                <i class="fa-solid fa-mobile-screen-button"></i>
+                                <span>New Device</span>
+                            </div>
+                        </div>
+                        <div class="buyback-saving">
+                            <span class="saving-label">You Save</span>
+                            <span class="saving-amount">₹25,000</span>
+                            <span class="saving-note">+ Extra 5% Bank Offer</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- SLIDE 2: STUDENT OFFER -->
+                <div class="ad-slide student-banner">
+
+                    <div class="ad-banner-badge student-badge">🎓 STUDENTS ONLY</div>
+
+                    <div class="ad-banner-left">
+                        <div class="ad-banner-icon student-icon">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div class="ad-banner-text">
+                            <span class="ad-label student-label">STUDENT SPECIAL OFFER</span>
+                            <h2>Learn More. Pay Less.</h2>
+                            <p>
+                                Verified students get an <strong>exclusive extra 12% OFF</strong> on laptops,
+                                tablets, and headphones — plus free accessories worth ₹3,000 with every order!
+                            </p>
+                            <ul class="ad-features student-features">
+                                <li><i class="fa-solid fa-check-circle"></i> Extra 12% student discount</li>
+                                <li><i class="fa-solid fa-check-circle"></i> Free bag + earphones with laptops</li>
+                                <li><i class="fa-solid fa-check-circle"></i> 0% EMI for 18 months</li>
+                                <li><i class="fa-solid fa-check-circle"></i> Priority student support</li>
+                            </ul>
+                            <div class="ad-buttons">
+                                <button class="ad-btn-primary student-btn" onclick="scrollToProducts()">
+                                    <i class="fa-solid fa-tag"></i> Claim Student Offer
+                                </button>
+                                <button class="ad-btn-secondary student-btn-outline">
+                                    <i class="fa-solid fa-id-card"></i> Verify Student ID
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ad-banner-right student-visual">
+                        <div class="student-stats">
+                            <div class="stat-card">
+                                <span class="stat-num">12%</span>
+                                <span class="stat-text">Extra OFF</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-num">₹3K</span>
+                                <span class="stat-text">Free Gifts</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-num">0%</span>
+                                <span class="stat-text">EMI Interest</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-num">18</span>
+                                <span class="stat-text">Months EMI</span>
+                            </div>
+                        </div>
+                        <div class="student-devices">
+                            <i class="fa-solid fa-laptop"></i>
+                            <i class="fa-solid fa-tablet-screen-button"></i>
+                            <i class="fa-solid fa-headphones"></i>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- SLIDER CONTROLS -->
+            <button class="ad-slider-btn ad-slider-prev" id="adPrev" onclick="adSliderMove(-1)">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button class="ad-slider-btn ad-slider-next" id="adNext" onclick="adSliderMove(1)">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+
+            <!-- DOTS -->
+            <div class="ad-slider-dots">
+                <button class="ad-dot active-dot" onclick="adSliderGoTo(0)"></button>
+                <button class="ad-dot" onclick="adSliderGoTo(1)"></button>
+            </div>
+
+        </section>
+
+
+        <!-- ================= SHOP ================= -->
+
+        <section id="products" class="shop">
+
+            <!-- FILTER -->
+
+            <aside class="filters">
+
+                <h2>Filters</h2>
+
+                <label>Price</label>
+
+                <select id="priceFilter" onchange="filterProducts()">
+
+                    <option value="all">All Prices</option>
+
+                    <option value="50000">
+                        Under ₹50,000
+                    </option>
+
+                    <option value="100000">
+                        Under ₹1,00,000
+                    </option>
+
+                </select>
+
+
+                <label>Laptop Brands</label>
+
+                <label>
+                    <input type="checkbox" value="HP" class="brandFilter" onchange="filterProducts()">
+                    HP
+                </label>
+
+                <label>
+                    <input type="checkbox" value="Dell" class="brandFilter" onchange="filterProducts()">
+                    Dell
+                </label>
+
+                <label>
+                    <input type="checkbox" value="Asus" class="brandFilter" onchange="filterProducts()">
+                    Asus
+                </label>
+
+                <label>
+                    <input type="checkbox" value="Lenovo" class="brandFilter" onchange="filterProducts()">
+                    Lenovo
+                </label>
+
+                <label>Mobile Brands</label>
+
+                <label>
+                    <input type="checkbox" value="Apple" class="brandFilter" onchange="filterProducts()">
+                    Apple
+                </label>
+
+                <label>
+                    <input type="checkbox" value="Samsung" class="brandFilter" onchange="filterProducts()">
+                    Samsung
+                </label>
+
+                <label>
+                    <input type="checkbox" value="Vivo" class="brandFilter" onchange="filterProducts()">
+                    Vivo
+                </label>
+
+                <label>
+                    <input type="checkbox" value="Xiaomi" class="brandFilter" onchange="filterProducts()">
+                    Xiaomi
+                </label>
+
+
+                <label>Rating</label>
+
+                <select id="ratingFilter" onchange="filterProducts()">
+
+                    <option value="0">
+                        Any Rating
+                    </option>
+
+                    <option value="4">
+                        4★ & Above
+                    </option>
+
+                    <option value="4.5">
+                        4.5★ & Above
+                    </option>
+
+                </select>
+
+
+                <label>RAM / Storage</label>
+
+                <select id="storageFilter" onchange="filterProducts()">
+
+                    <option value="all">All</option>
+
+                    <option value="8/128">
+                        8GB / 128GB
+                    </option>
+
+                    <option value="16/512">
+                        16GB / 512GB
+                    </option>
+
+                    <option value="16/1000">
+                        16GB / 1TB
+                    </option>
+
+                </select>
+
+
+                <label>Screen Size</label>
+
+                <select id="screenFilter" onchange="filterProducts()">
+
+                    <option value="all">All</option>
+
+                    <option value="6.5">
+                        6.5"
+                    </option>
+
+                    <option value="15.6">
+                        15.6"
+                    </option>
+
+                    <option value="55">
+                        55"
+                    </option>
+
+                </select>
+
+
+                <button onclick="clearFilters()">
+                    Clear Filters
+                </button>
+
+            </aside>
+
+
+            <!-- PRODUCTS -->
+
+            <main class="product-section">
+
+                <div class="product-header">
+
+                    <div>
+
+                        <p>POPULAR PRODUCTS</p>
+
+                        <h2>
+                            Featured Products
+                        </h2>
+
+                    </div>
+
+                    <span id="productCount"></span>
+
+                </div>
+
+                <div id="productContainer" class="product-container">
+                </div>
+
+            </main>
+
+        </section>
+
+
+        <section id="support" class="support">
+
+            <div class="support-header">
+
+                <p>CUSTOMER SERVICE</p>
+
+                <h2>
+                    How Can We Help You?
+                </h2>
+
+                <p>
+                    Get help with orders, payments, delivery,
+                    warranty and returns.
+                </p>
+
+            </div>
+
+
+            <div class="support-container">
+
+                <div class="support-item">
+                    <i class="fa-solid fa-box"></i>
+                    <h3>Track Order</h3>
+                    <p>Check your order status.</p>
+                    <div class="support-details">Enter your order ID to see real-time updates on your package location.
+                    </div>
+                </div>
+
+                <div class="support-item">
+                    <i class="fa-regular fa-comment-dots"></i>
+                    <h3>Chat Support</h3>
+                    <p>Talk to our support team.</p>
+                    <div class="support-details">Available 24/7. Connect with a live agent for instant resolution.</div>
+                </div>
+
+                <div class="support-item">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h3>Warranty</h3>
+                    <p>Manage your warranty.</p>
+                    <div class="support-details">Register new products, claim warranty, or extend coverage easily.</div>
+                </div>
+
+                <div class="support-item">
+                    <i class="fa-solid fa-right-left"></i>
+                    <h3>Easy Returns</h3>
+                    <p>Hassle-free return.</p>
+                    <div class="support-details">Return products within 30 days for a full refund or replacement.</div>
+                </div>
+
+            </div>
+
+        </section>
+
+    </div> <!-- END MAIN CONTENT -->
+
+
+    <!-- ================= PRODUCT PAGE VIEW ================= -->
+
+    <div id="productPageView" style="display: none;">
+    </div>
+
+
+    <!-- ================= MODAL ================= -->
+
+    <div id="modal" class="modal" onclick="closeOutside(event)">
+
+        <div class="modal-content">
+
+            <button class="close" onclick="closeModal()">
+                ×
+            </button>
+
+            <div id="modalBody"></div>
+
+        </div>
+
+    </div>
+
+
+    <div id="toast"></div>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

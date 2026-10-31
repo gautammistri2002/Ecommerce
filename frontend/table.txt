@@ -1,0 +1,14 @@
+Students
+   ¦
+   ¦
+   ?
+Enrollments
+   ¦
+   +-------- Courses
+   ¦
+   +-------- Payments
+
+Courses
+   ¦
+   ?
+Instructors

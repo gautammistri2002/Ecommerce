@@ -1,0 +1,21 @@
+CREATE DATABASE
+USE
+CREATE TABLE
+INSERT INTO
+SELECT
+WHERE
+UPDATE
+DELETE
+ALTER TABLE
+DROP TABLE
+DROP DATABASE
+ORDER BY
+GROUP BY
+HAVING
+LIMIT
+JOIN
+uniq 
+null
+ not null
+date and time like timestamp,
+current time  use : - default  current timestamp/

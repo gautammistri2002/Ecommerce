@@ -1,0 +1,103 @@
+Yes! This is exactly why we use the enrollments table. ??
+
+Suppose we have 2 students:
+
+Rahul ? enrolls in 3 subjects
+Amit ? enrolls in 1 subject
+1. Students table
+students
+--------------------------------
+id    name
+1     Rahul
+2     Amit
+2. Courses/Subjects table
+courses
+--------------------------------
+id    course_name
+101   Java
+102   SQL
+103   React
+104   Python
+3. Enrollments table
+
+Now we connect them:
+
+enrollments
+--------------------------------
+id    student_id    course_id
+1     1             101
+2     1             102
+3     1             103
+4     2             101
+
+Read it like this:
+
+Rahul (student_id = 1)
+   +-- Java
+   +-- SQL
+   +-- React
+
+Amit (student_id = 2)
+   +-- Java
+
+So Rahul has 3 rows in enrollments, while Amit has 1 row.
+
+Why not put courses directly in students?
+
+You might think:
+
+students
+--------------------------------
+id   name    course
+1    Rahul   Java, SQL, React
+2    Amit    Java
+
+? This is not a good database design.
+
+Instead:
+
+students
+     ?
+enrollments
+     ?
+courses
+
+This is called a many-to-many relationship:
+
+One student can enroll in many courses, and one course can have many students.
+
+That's why we use a separate enrollments table.
+
+SQL example
+CREATE TABLE students (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100)
+);
+
+CREATE TABLE courses (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    course_name VARCHAR(100)
+);
+
+CREATE TABLE enrollments (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    student_id INT,
+    course_id INT,
+
+    FOREIGN KEY (student_id)
+        REFERENCES students(id),
+
+    FOREIGN KEY (course_id)
+        REFERENCES courses(id)
+);
+
+Then:
+
+INSERT INTO enrollments (student_id, course_id)
+VALUES
+(1, 101),
+(1, 102),
+(1, 103),
+(2, 101);
+
+Key idea: A foreign key does not mean one student can have only one subject. A student can appear many times in the enrollments table.

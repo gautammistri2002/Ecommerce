@@ -1,0 +1,27 @@
+Step 1: What does VARCHAR do?
+password_hash VARCHAR(255) NOT NULL
+
+
+This only creates a column that can store text.
+For example, it can store:
+- Rahul@123
+- Hello123
+- $2b$10$abc... (a password hash)
+It doesn't automatically change one into another.
+
+
+1. Signup form
+Password: Rahul@123
+
+2. 
+
+2.Backend code
+
+bcrypt.hash(password, 10)
+Converts the password into a secure hash
+
+
+
+3. MySQL database
+Column: password_hash
+Value: $2b$10$...

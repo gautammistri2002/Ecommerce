@@ -1,0 +1,4 @@
+SQL AUTO INCREMENT INCREASE NUMBER IF DELETE IS NOT ASSISGN AFTER BECASUSE IS PRIMARY OR UNIQ TOO
+
+
+when sql qury genrete number of ty so once time execute all otherwise create all priviouse double time

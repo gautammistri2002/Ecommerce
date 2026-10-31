@@ -1,0 +1,103 @@
+ 
+We'll create a database called user_authentication with a users table and a password_reset_tokens table.
+
+
+             SIGNUP
+    Save name, email and hashed password
+                    |
+                    v
+               USERS TABLE
+       Stores registered user accounts
+                    |
+                    v
+                 LOGIN
+        Verify email and password
+                    |
+                    v
+            FORGOT PASSWORD
+      Verify reset token using
+      password_reset_tokens table
+                    |
+                    v
+             UPDATE PASSWORD
+
+
+
+
+NOT NULL  :  -  The NOT NULL constraint enforces a column to NOT accept NULL values. This enforces a field to always contain a value, which means that you cannot insert a new record, or update a record without adding a value to this field.
+
+
+SQL Date Data Types
+Different SQL databases have various data types to store date and time values.
+
+MySQL has the following date data types:
+
+DATE - format YYYY-MM-DD
+DATETIME - format: YYYY-MM-DD HH:MI:SS
+TIMESTAMP - format: YYYY-MM-DD HH:MI:SS
+TIME - format: HH:MI:SS
+YEAR - format YYYY or YY
+SQL Server has the following date data types:
+
+DATE - format YYYY-MM-DD
+DATETIME - format: YYYY-MM-DD HH:MI:SS
+SMALLDATETIME - format: YYYY-MM-DD HH:MI:SS
+TIME - format: HH:MI:SS
+TIMESTAMP - format: a unique number
+Note: The date data type are defined for a column upon creation of a new table in your database.
+
+SQL Working with Dates
+Look at the following table:
+
+Orders Table
+OrderId	ProductName	OrderDate
+1	Geitost	2025-11-11
+2	Camembert Pierrot	2025-11-09
+3	Mozzarella di Giovanni	2025-11-11
+4	Mascarpone Fabioli	2025-10-29
+Now we want to select the records with an OrderDate of "2025-11-11" from the table above.
+
+We use the following SELECT statement:
+
+SELECT * FROM Orders WHERE OrderDate='2025-11-11'
+
+
+
+DEFAULT: he DEFAULT constraint is used to automatically insert a default value for a column, if no value is specified.
+
+The default value will be added to all new records (if no other value is specified).
+
+
+
+TheUNIQUE  :-- UNIQUE constraint ensures that all values in a column are unique.
+
+Both the UNIQUE and PRIMARY KEY constraints provide a guarantee for uniqueness for a column or set of columns. However, you can have many UNIQUE constraints per table, but only one PRIMARY KEY constraint per table.
+
+
+
+Signup page
+:-
+User enters name, email and password. The backend hashes the password and saves the account in users.
+
+
+
+
+
+
+
+Login page
+:-
+User enters email and password. The backend finds the account and verifies the password against password_hash.
+
+
+
+
+
+
+Forgot Password page
+:-
+User enters their email. The backend sends a time-limited reset link, verifies the token, and saves the newly hashed password in users
+
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP.
+
+It is used to automatically save the date and time when a record is created in a database table ,USE CURRENT.
