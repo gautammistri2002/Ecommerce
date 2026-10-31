@@ -1,0 +1,11 @@
+Benefit	What to say in interview
+1. Encapsulation	Combines data and methods in one class and controls access to data.
+2. Abstraction	Hides unnecessary implementation details and shows only what is required.
+3. Inheritance	Allows a class to reuse properties and methods of another class.
+4. Polymorphism	Same method/interface can behave differently depending on the object.
+5. Code Reusability	Existing classes and methods can be reused instead of writing the same code again.
+6. Maintainability	Large code can be divided into logical classes, making changes easier.
+7. Scalability	Easier to add new features as the application grows.
+8. Modularity	Code is divided into separate, manageable components.
+9. Data Security	Encapsulation + access modifiers (private, protected, etc.) can restrict direct access to data.
+10. Real-world modeling	Things such as Student, Teacher, Exam, Question can be represented as objects.

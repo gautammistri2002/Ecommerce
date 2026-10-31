@@ -1,0 +1,31 @@
+
+Another interview question:
+ "Why not just use functions?"
+
+Good answer:
+
+"For small programs, procedural programming using functions may be sufficient. But as an application becomes larger, OOP helps group related data and behavior, provides reuse through inheritance/composition, controls access through encapsulation, and makes the system easier to maintain and extend."
+
+? Best short answer to memorize
+
+If they ask "What are the benefits of OOP?", say:
+
+"The major benefits of OOP are encapsulation, abstraction, inheritance, polymorphism, code reusability, modularity, maintainability, scalability, and better modeling of real-world entities. In Java, memory management itself is handled by the JVM and Garbage Collector, not by OOP."
+
+
+
+
+
+If interviewer asks:
+
+"Does OOP improve memory management?"
+
+Don't say simply yes.
+
+Say:
+
+"OOP itself does not manage memory. In Java, memory is managed by the JVM, mainly through heap allocation and Garbage Collection. OOP helps us organize objects and their relationships, but object creation and garbage collection are handled by the JVM."
+
+That's a much stronger answer.
+
+Heap is a part of memory where objects created using new are stored.

@@ -1,0 +1,1 @@
+ (SMTP) is an application-layer internet standard protocol used to send, transfer, and relay electronic mail messages between mail servers.

@@ -1,0 +1,45 @@
+Methos :
+
+If a method or variable is static, you generally do not need to create an object to access it.
+
+Example: Static method
+public class Calculator {
+
+    static int add(int a, int b) {
+        return a + b;
+    }
+
+    public static void main(String[] args) {
+        int result = add(10, 20);
+        System.out.println(result);
+    }
+}
+
+Here:
+
+static int add(...)
+
+is static, so we can directly do:
+
+add(10, 20);
+
+No object like this is needed:
+
+Calculator obj = new Calculator();
+Without static
+
+If you remove static:
+
+int add(int a, int b) {
+    return a + b;
+}
+
+Then you need an object:
+
+Calculator obj = new Calculator();
+
+int result = obj.add(10, 20);
+
+
+
+A static method can be called using the class name.
