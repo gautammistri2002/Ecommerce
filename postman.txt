@@ -1,0 +1,2 @@
+postman :
+1.start spring boot server run first

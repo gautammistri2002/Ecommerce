@@ -1,0 +1,22 @@
+1. What does "key presses bubble up" mean?
+This is called Event Bubbling in JavaScript.
+
+Event bubbling means when an event happens on an inner HTML element, that event can travel upward through its parent elements.
+
+
+"I developed a login system for my Electromart website using HTML and JavaScript. The HTML creates the email and password fields and the Sign In button. I used event handlers such as onclick and onkeydown to trigger the login process when the user clicks the button or presses Enter.
+
+The doLogin() function collects the user's input using DOM methods like getElementById(). It validates the email and password using conditional statements.
+
+After validation, the function displays a loading indicator and sends a POST request to the backend using the Fetch API. I used asynchronous programming with async and await to handle the backend response without blocking the webpage.
+
+The backend verifies the credentials with the database and returns a response. If the login is successful, the frontend saves the returned user information in local storage and redirects the user to the homepage. If an error occurs, the frontend displays an appropriate message."
+
+
+2. What is localStorage?
+localStorage is a browser storage feature that allows JavaScript to save data in the user's browser.
+
+It can keep data even after the user closes the browser and opens it again.
+Example
+
+localStorage.setItem("username", "Gautam");

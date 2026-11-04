@@ -1,0 +1,215 @@
+# JAVASCRIPT LOCALSTORAGE — HOW TO INSPECT SAVED DATA
+
+## 1. What is Inspecting localStorage?
+
+Inspecting localStorage means viewing the data that JavaScript has saved in the browser.
+
+We can inspect saved data using Chrome Developer Tools (DevTools).
+
+Example:
+- Username
+- Email
+- Shopping cart items
+- Website preferences
+- Login-related user information
+
+## 2. Why Do We Inspect localStorage?
+
+1. To check whether data is saved successfully.
+2. To view stored keys and values.
+3. To debug JavaScript code.
+4. To check user information after login.
+5. To understand how website data is stored.
+
+## 3. Method 1: Inspect Using Chrome DevTools
+
+### Step 1: Open Your Website
+
+Open your website in Google Chrome.
+
+Example:
+
+http://localhost:5500
+
+### Step 2: Open Developer Tools
+
+Press:
+
+F12
+
+OR
+
+Ctrl + Shift + I
+
+This opens Chrome Developer Tools.
+
+### Step 3: Open the Application Tab
+
+At the top of DevTools, click:
+
+Application
+
+If you cannot see it, click the >> button.
+
+### Step 4: Find Local Storage
+
+On the left side, locate:
+
+Storage
+    |
+    +-- Local Storage
+           |
+           +-- Your Website URL
+
+Click your website URL.
+
+### Step 5: View Saved Data
+
+Example:
+
+Key:
+username
+
+Value:
+Gautam
+
+Another example:
+
+Key:
+electromart_user
+
+Value:
+{"id":101,"name":"Gautam","email":"demo@electromart.com"}
+
+This means the browser has saved the user information.
+
+## 4. Method 2: Inspect Using JavaScript Console
+
+Open Chrome DevTools and click the Console tab.
+
+### A. View All Saved Data
+
+console.log(localStorage);
+
+This displays the localStorage object.
+
+### B. Retrieve Specific Data
+
+localStorage.getItem("username");
+
+Output:
+
+Gautam
+
+### C. Convert JSON Text Into an Object
+
+const user = JSON.parse(
+    localStorage.getItem("electromart_user")
+);
+
+console.log(user);
+
+This converts saved JSON text into a JavaScript object.
+
+### D. Retrieve Specific User Information
+
+console.log(user.name);
+
+Output:
+
+Gautam
+
+## 5. Important Commands
+
+Command:
+localStorage.setItem("username", "Gautam");
+
+Purpose:
+Save data.
+
+Command:
+localStorage.getItem("username");
+
+Purpose:
+Retrieve saved data.
+
+Command:
+localStorage.removeItem("username");
+
+Purpose:
+Remove a specific item.
+
+Command:
+localStorage.clear();
+
+Purpose:
+Remove all localStorage data for the current website.
+
+Command:
+console.log(localStorage);
+
+Purpose:
+Inspect the localStorage object in the Console.
+
+## 6. How to Inspect Login Data in Electromart
+
+Your login code:
+
+localStorage.setItem(
+    "electromart_user",
+    JSON.stringify(result.data)
+);
+
+After successful login:
+
+1. Backend verifies the email and password.
+2. Backend returns user information.
+3. JavaScript saves the user information in localStorage.
+4. Open Chrome DevTools.
+5. Click Application.
+6. Click Local Storage.
+7. Select your website URL.
+8. Find the electromart_user key.
+9. View the saved user information.
+
+## 7. Application Tab vs Console
+
+Application Tab:
+- Displays saved data visually.
+- Shows keys and values.
+- Allows you to inspect and edit stored data.
+
+Console:
+- Allows you to inspect data using JavaScript.
+- Allows you to retrieve specific values.
+- Allows you to execute JavaScript commands.
+
+## 8. Important Security Note
+
+Never store plain-text passwords in localStorage.
+
+localStorage is accessible to JavaScript running on your website.
+
+Use secure backend authentication and proper session or token management.
+
+## 9. Quick Revision
+
+Inspecting localStorage = Viewing saved browser data
+
+DevTools = Browser debugging tools
+
+Application Tab = Visual inspection of saved data
+
+Console = Inspecting data using JavaScript
+
+Key = Name of stored data
+
+Value = Actual stored data
+
+getItem() = Retrieve data
+
+setItem() = Save data
+
+REMEMBER:
+
+Chrome DevTools allows us to inspect the data saved by JavaScript in the browser without directly accessing the MySQL database.

@@ -1,0 +1,178 @@
+# JAVASCRIPT LOCALSTORAGE — NOTES
+
+## 1. What is localStorage?
+
+localStorage is a browser storage feature that allows JavaScript to save data in the user's browser.
+
+The saved data remains available even after:
+- Closing the browser
+- Refreshing the webpage
+- Restarting the computer
+
+Example: Remembering a user's name or login information.
+
+## 2. Why do we use localStorage?
+
+1. To save user information in the browser.
+2. To remember user preferences.
+3. To store shopping cart items.
+4. To remember login-related information.
+5. To save website settings such as dark mode.
+
+## 3. Important localStorage Methods
+
+### A. setItem() — Save Data
+
+Syntax:
+
+localStorage.setItem("key", "value");
+
+Example:
+
+localStorage.setItem("username", "Gautam");
+
+Explanation:
+- localStorage = Browser storage object
+- setItem() = Method used to save data
+- username = Key (name of stored data)
+- Gautam = Value (actual data)
+
+### B. getItem() — Retrieve Data
+
+Syntax:
+
+localStorage.getItem("key");
+
+Example:
+
+const name = localStorage.getItem("username");
+
+console.log(name);
+
+Output:
+
+Gautam
+
+### C. removeItem() — Remove Specific Data
+
+Example:
+
+localStorage.removeItem("username");
+
+This removes the username item from localStorage.
+
+### D. clear() — Remove All Data
+
+Example:
+
+localStorage.clear();
+
+This removes all localStorage data belonging to the current website.
+
+## 4. What is a Key and Value?
+
+localStorage stores data in key-value pairs.
+
+Example:
+
+localStorage.setItem("username", "Gautam");
+
+Key   = username
+Value = Gautam
+
+Another example:
+
+localStorage.setItem("city", "Surat");
+
+Key   = city
+Value = Surat
+
+## 5. What is JSON.stringify()?
+
+localStorage stores data as strings.
+
+JSON.stringify() converts a JavaScript object into JSON text.
+
+Example:
+
+const user = {
+    name: "Gautam",
+    email: "demo@electromart.com"
+};
+
+localStorage.setItem("user", JSON.stringify(user));
+
+## 6. What is JSON.parse()?
+
+JSON.parse() converts JSON text back into a JavaScript object.
+
+Example:
+
+const savedUser = JSON.parse(localStorage.getItem("user"));
+
+console.log(savedUser.name);
+
+Output:
+
+Gautam
+
+## 7. How localStorage Works in a Login System
+
+Step 1: User enters email and password.
+
+Step 2: JavaScript sends login data to the backend using an API.
+
+Step 3: Backend verifies the credentials using the database.
+
+Step 4: Backend returns the login response.
+
+Step 5: If login is successful, JavaScript saves the returned user information.
+
+Example:
+
+localStorage.setItem(
+    "electromart_user",
+    JSON.stringify(result.data)
+);
+
+Step 6: The user is redirected to the homepage.
+
+Step 7: The homepage can retrieve the saved user information.
+
+## 8. Difference Between localStorage and MySQL
+
+localStorage:
+- Stores data in the browser.
+- JavaScript can access it directly.
+- Used for browser-side preferences and state.
+- Data is generally specific to a website and browser.
+
+MySQL:
+- Stores data in a database on the server.
+- Backend applications access the database.
+- Used for registered users, products, orders and payments.
+- Supports permanent application data storage.
+
+## 9. Important Security Note
+
+Never store plain-text passwords in localStorage.
+
+localStorage is accessible to JavaScript running on the website, so sensitive authentication data can be exposed if the website has a security vulnerability.
+
+Use secure backend authentication and appropriate session or token management.
+
+## 10. Quick Revision
+
+localStorage       = Browser storage
+setItem()          = Save data
+getItem()          = Retrieve data
+removeItem()       = Remove specific data
+clear()            = Remove all website localStorage data
+JSON.stringify()   = Convert object into JSON text
+JSON.parse()       = Convert JSON text into object
+Key                = Name of stored data
+Value              = Actual stored data
+
+REMEMBER:
+
+localStorage allows JavaScript to save and retrieve data in the browser without sending that data to the backend every time.
